@@ -901,6 +901,7 @@ function TransactionsPage({
 }
 
 // Transaction modal
+
 function TransactionModal({
   form,
   onChange,
@@ -922,113 +923,127 @@ function TransactionModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-[#111B2E] p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">
-            {editing ? "Edit Transaction" : "Add Transaction"}
-          </h2>
+    <div className="fixed inset-0 z-[60] overflow-y-auto bg-black/70">
+      <div className="flex min-h-full items-center justify-center p-3 sm:p-4">
+        <div className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-slate-700 bg-[#111B2E] sm:max-h-[calc(100dvh-2rem)]">
 
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white"
-          >
-            <X size={22} />
-          </button>
-        </div>
+          {/* Header */}
+          <div className="flex shrink-0 items-center justify-between border-b border-slate-800 px-5 py-4">
+            <h2 className="text-lg font-bold text-white">
+              {editing ? "Edit Transaction" : "Add Transaction"}
+            </h2>
 
-        <form onSubmit={onSubmit} className="space-y-4">
-          <FormField label="Transaction Title">
-            <input
-              name="title"
-              value={form.title}
-              onChange={onChange}
-              placeholder="e.g. Monthly salary"
-              required
-              className="form-input"
-            />
-          </FormField>
-
-          <FormField label="Amount (₹)">
-            <input
-              name="amount"
-              type="number"
-              min="0.01"
-              step="0.01"
-              value={form.amount}
-              onChange={onChange}
-              placeholder="Enter amount"
-              required
-              className="form-input"
-            />
-          </FormField>
-
-          <FormField label="Type">
-            <select
-              name="type"
-              value={form.type}
-              onChange={onChange}
-              className="form-input"
-            >
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
-          </FormField>
-
-          <FormField label="Category">
-            <select
-              name="category"
-              value={form.category}
-              onChange={onChange}
-              className="form-input"
-            >
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </FormField>
-
-          <FormField label="Date">
-            <input
-              name="date"
-              type="date"
-              value={form.date}
-              onChange={onChange}
-              required
-              className="form-input"
-            />
-          </FormField>
-
-          <FormField label="Notes (Optional)">
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={onChange}
-              rows={2}
-              placeholder="Add a note..."
-              className="form-input resize-none"
-            />
-          </FormField>
-
-          <div className="flex gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-xl border border-slate-700 py-3 text-sm text-slate-300 hover:bg-slate-800"
+              className="text-slate-400 hover:text-white"
             >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              className="flex-1 rounded-xl bg-indigo-600 py-3 text-sm font-medium text-white hover:bg-indigo-500"
-            >
-              {editing ? "Update Transaction" : "Save Transaction"}
+              <X size={22} />
             </button>
           </div>
-        </form>
+
+          {/* Scrollable form */}
+          <form
+            onSubmit={onSubmit}
+            className="flex min-h-0 flex-1 flex-col overflow-hidden"
+          >
+            <div className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-5 py-4">
+
+              <FormField label="Transaction Title">
+                <input
+                  name="title"
+                  value={form.title}
+                  onChange={onChange}
+                  placeholder="e.g. Monthly salary"
+                  required
+                  className="form-input"
+                />
+              </FormField>
+
+              <FormField label="Amount (₹)">
+                <input
+                  name="amount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={form.amount}
+                  onChange={onChange}
+                  placeholder="Enter amount"
+                  required
+                  className="form-input"
+                />
+              </FormField>
+
+              <FormField label="Type">
+                <select
+                  name="type"
+                  value={form.type}
+                  onChange={onChange}
+                  className="form-input"
+                >
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
+                </select>
+              </FormField>
+
+              <FormField label="Category">
+                <select
+                  name="category"
+                  value={form.category}
+                  onChange={onChange}
+                  className="form-input"
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </FormField>
+
+              <FormField label="Date">
+                <input
+                  name="date"
+                  type="date"
+                  value={form.date}
+                  onChange={onChange}
+                  required
+                  className="form-input"
+                />
+              </FormField>
+
+              <FormField label="Notes (Optional)">
+                <textarea
+                  name="notes"
+                  value={form.notes}
+                  onChange={onChange}
+                  rows={2}
+                  placeholder="Add a note..."
+                  className="form-input resize-none"
+                />
+              </FormField>
+
+            </div>
+
+            {/* Always-visible buttons */}
+            <div className="flex shrink-0 gap-3 border-t border-slate-800 bg-[#111B2E] px-5 py-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 rounded-xl border border-slate-700 py-3 text-sm text-slate-300 hover:bg-slate-800"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="flex-1 rounded-xl bg-indigo-600 py-3 text-sm font-medium text-white hover:bg-indigo-500"
+              >
+                {editing ? "Update Transaction" : "Save Transaction"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
